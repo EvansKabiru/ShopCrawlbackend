@@ -41,9 +41,9 @@ def create_app(config_class=None):
         app.config["MAIL_PASSWORD"] = "delu jsnj cjhz szqg"
         app.config["MAIL_DEFAULT_SENDER"] = "blessed.wesonga@student.moringaschool.com"
         app.secret_key = secrets.token_hex(16)
-        app.config['GOOGLE_CLIENT_ID'] = '414872029170-3u2c5nboldvniesjmkgm0fhtc54a0mld.apps.googleusercontent.com'
-        app.config['GOOGLE_CLIENT_SECRET'] = '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'
-        app.config['GOOGLE_REDIRECT_URI'] = 'http://127.0.0.1:5000/google_login/callback'
+        # app.config['GOOGLE_CLIENT_ID'] = '414872029170-3u2c5nboldvniesjmkgm0fhtc54a0mld.apps.googleusercontent.com'
+        # app.config['GOOGLE_CLIENT_SECRET'] = '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'
+        # app.config['GOOGLE_REDIRECT_URI'] = 'http://127.0.0.1:5000/google_login/callback'
 
     # Initialize extensions
     db.init_app(app)
@@ -75,9 +75,9 @@ def create_app(config_class=None):
         flow = Flow.from_client_secrets_file(
             client_secrets_file=client_secrets_file,
             scopes=[
-                "https://www.googleapis.com/auth/userinfo.profile",
-                "https://www.googleapis.com/auth/userinfo.email",
-                "openid"
+                # "https://www.googleapis.com/auth/userinfo.profile",
+                # "https://www.googleapis.com/auth/userinfo.email",
+                # "openid"
             ],
             redirect_uri=app.config['GOOGLE_REDIRECT_URI']
         )
