@@ -29,7 +29,7 @@ def create_app(config_class=None):
     if config_class:
         app.config.from_object(config_class)
     else:
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///shopcrawl.db'
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://shop_crawl_db_user:v4bSEhl4jKrMJNW0XEk61pzMCx0pYY4V@dpg-cv49m72j1k6c73bgvqa0-a.oregon-postgres.render.com/shop_crawl_db'
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
         app.config["JWT_SECRET_KEY"] = "fghsgdgfdsgf"
         app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=2)
@@ -75,9 +75,9 @@ def create_app(config_class=None):
         flow = Flow.from_client_secrets_file(
             client_secrets_file=client_secrets_file,
             scopes=[
-                # "https://www.googleapis.com/auth/userinfo.profile",
-                # "https://www.googleapis.com/auth/userinfo.email",
-                # "openid"
+                "https://www.googleapis.com/auth/userinfo.profile",
+                "https://www.googleapis.com/auth/userinfo.email",
+                "openid"
             ],
             redirect_uri=app.config['GOOGLE_REDIRECT_URI']
         )
