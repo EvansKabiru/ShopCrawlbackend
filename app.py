@@ -16,13 +16,15 @@ import secrets
 from google.oauth2 import id_token
 from google.auth.transport import requests as google_requests
 
+app = Flask(__name__)
+
+
 # Initialize extensions (without app context)
 migrate = Migrate()
 jwt = JWTManager()
 mail = Mail()
 
 def create_app(config_class=None):
-    app = Flask(__name__)
     CORS(app)
 
     # Load configuration
