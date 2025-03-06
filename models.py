@@ -1,6 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
 
@@ -9,19 +8,12 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    phone_number = db.Column(db.String(20), unique=True, nullable=False)  
-    password_hash = db.Column(db.String(128), nullable=False)
+    phone_number = db.Column(db.String(20), unique=True, nullable=True)
+    password_hash = db.Column(db.String(128), nullable=True)  # Allow null for Google users
     profile_picture = db.Column(db.String(256), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     is_admin = db.Column(db.Boolean, default=False, nullable=False)
-
-    def set_password(self, password):
-        """Hash and store the user's password"""
-        self.password_hash = generate_password_hash(password)
-
-    def check_password(self, password):
-        """Verify the user's password"""
-        return check_password_hash(self.password_hash, password)
+    provider = db.Column(db.String(50), default="email")  # Default to "email", allow "google"
 
     
     search_history = db.relationship('SearchHistory', backref='user', lazy=True)
@@ -46,13 +38,13 @@ class Product(db.Model):
     shop_name = db.Column(db.String(100))
     payment_mode = db.Column(db.String(50))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    navigate_link = db.Column(db.String(255))  # New field for the navigation link
 
     shop_id = db.Column(db.Integer, db.ForeignKey('shops.id', name='fk_product_shop'), nullable=False)  # Specify constraint name
     comparisons = db.relationship('ComparisonResult', backref='product', lazy=True)
     
     # Change backref to avoid conflict with the existing 'products' in the Shop model
-    shop = db.relationship('Shop', backref='shop_products')  # Unique backref name
-
+    shop = db.relationship('Shop', backref='shop_products')
 
 class ProductSearch(db.Model):
     __tablename__ = 'product_searches'

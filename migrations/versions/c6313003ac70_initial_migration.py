@@ -1,8 +1,8 @@
 """Initial migration.
 
-Revision ID: 730a92cf628b
+Revision ID: c6313003ac70
 Revises: 
-Create Date: 2025-03-05 08:29:31.706192
+Create Date: 2025-03-06 20:09:34.777410
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '730a92cf628b'
+revision = 'c6313003ac70'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -35,11 +35,12 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('username', sa.String(length=50), nullable=False),
     sa.Column('email', sa.String(length=120), nullable=False),
-    sa.Column('phone_number', sa.String(length=20), nullable=False),
-    sa.Column('password_hash', sa.String(length=128), nullable=False),
+    sa.Column('phone_number', sa.String(length=20), nullable=True),
+    sa.Column('password_hash', sa.String(length=128), nullable=True),
     sa.Column('profile_picture', sa.String(length=256), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('is_admin', sa.Boolean(), nullable=False),
+    sa.Column('provider', sa.String(length=50), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('phone_number'),
@@ -64,6 +65,7 @@ def upgrade():
     sa.Column('shop_name', sa.String(length=100), nullable=True),
     sa.Column('payment_mode', sa.String(length=50), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.Column('navigate_link', sa.String(length=255), nullable=True),
     sa.Column('shop_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['shop_id'], ['shops.id'], name='fk_product_shop'),
     sa.PrimaryKeyConstraint('id')

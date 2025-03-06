@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from models import Product, User, db,Shop
+from models import Product, User, db
 from datetime import datetime
 
 # Define the Blueprint
@@ -12,50 +12,37 @@ def is_admin():
     user = User.query.get(user_id)
     return user and user.is_admin
 
+# Create a new product (Admin only)
 @product_bp.route('/products', methods=['POST'])
-@jwt_required()
-def create_product():
-    if not is_admin():
-        return jsonify({"message": "Only admins can create products"}), 403
-
+def add_product():
+    # Get JSON data from the request
     data = request.get_json()
-    product_name = data.get('product_name')
-    product_price = data.get('product_price')
-    product_rating = data.get('product_rating')
-    product_url = data.get('product_url')
-    delivery_cost = data.get('delivery_cost')
-    shop_name = data.get('shop_name')
-    payment_mode = data.get('payment_mode')
 
     # Validate required fields
-    if not product_name or not product_price or not product_url or not shop_name:
-        return jsonify({"message": "Product name, price, URL, and shop name are required"}), 400
+    if not data or not all(key in data for key in ['product_name', 'product_price', 'shop_id']):
+        return jsonify({"error": "Missing required fields"}), 400
 
-    # Find the shop by name (this is assuming shop_name exists)
-    shop = Shop.query.filter_by(name=shop_name).first()
+    try:
+        # Create a new product instance
+        new_product = Product(
+            product_name=data['product_name'],
+            product_price=data['product_price'],
+            product_rating=data.get('product_rating'),
+            product_url=data.get('product_url'),
+            delivery_cost=data.get('delivery_cost'),
+            shop_name=data.get('shop_name'),
+            payment_mode=data.get('payment_mode'),
+            navigate_link=data.get('navigate_link'),
+            shop_id=data['shop_id'],
+            created_at=datetime.utcnow()
+        )
 
-    # If the shop doesn't exist, return an error
-    if not shop:
-        return jsonify({"message": "Shop not found"}), 404
+        # Add the product to the database
+        db.session.add(new_product)
+        db.session.commit()
 
-    # Create a new product and associate the shop by its shop_id
-    new_product = Product(
-        product_name=product_name,
-        product_price=product_price,
-        product_rating=product_rating,
-        product_url=product_url,
-        delivery_cost=delivery_cost,
-        shop_name=shop_name,  # You may still keep this field if you want to store it as well
-        payment_mode=payment_mode,
-        shop_id=shop.id  # Here you associate the product with the shop using shop_id
-    )
-
-    db.session.add(new_product)
-    db.session.commit()
-
-    return jsonify({
-        "message": "Product created successfully",
-        "product": {
+        # Return the created product as JSON
+        return jsonify({
             "id": new_product.id,
             "product_name": new_product.product_name,
             "product_price": new_product.product_price,
@@ -64,10 +51,36 @@ def create_product():
             "delivery_cost": new_product.delivery_cost,
             "shop_name": new_product.shop_name,
             "payment_mode": new_product.payment_mode,
-            "created_at": new_product.created_at.isoformat() if new_product.created_at else None
-        }
-    }), 201
+            "navigate_link": new_product.navigate_link,
+            "shop_id": new_product.shop_id,
+            "created_at": new_product.created_at.isoformat()
+        }), 201
 
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+
+@product_bp.route('/products/search', methods=['GET'])
+def search_products():
+    query = request.args.get('query', '').strip().lower()
+    if not query:
+        return jsonify({"message": "No search query provided"}), 400
+
+    products = Product.query.filter(Product.product_name.ilike(f"%{query}%")).order_by(Product.product_price.asc()).all()
+
+    products_list = [{
+        "id": product.id,
+        "product_name": product.product_name,
+        "product_price": product.product_price,
+        "product_rating": product.product_rating,
+        "product_url": product.product_url,
+        "delivery_cost": product.delivery_cost,
+        "shop_name": product.shop_name,
+        "payment_mode": product.payment_mode,
+        "created_at": product.created_at.isoformat() if product.created_at else None
+    } for product in products]
+
+    return jsonify(products_list), 200
 
 # Fetch all products (Public access)
 @product_bp.route('/products', methods=['GET'])
@@ -84,6 +97,7 @@ def get_all_products():
             "delivery_cost": product.delivery_cost,
             "shop_name": product.shop_name,
             "payment_mode": product.payment_mode,
+            "navigate_link": product.navigate_link,  # Include navigate_link
             "created_at": product.created_at.isoformat() if product.created_at else None
         })
     return jsonify(products_list), 200

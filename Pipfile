@@ -5,7 +5,6 @@ name = "pypi"
 
 [packages]
 flask = "*"
-flask-migrate = "*"
 flask-sqlalchemy = "*"
 flask-cors = "*"
 flask-jwt-extended = "*"
@@ -19,6 +18,7 @@ google-auth = "*"
 google-auth-oauthlib = "*"
 google-auth-httplib2 = "*"
 google-api-python-client = "*"
+flask-migrate = "*"
 
 [dev-packages]
 
