@@ -45,7 +45,7 @@ def create_app(config_class=None):
         app.secret_key = secrets.token_hex(16)
         app.config['GOOGLE_CLIENT_ID'] = '414872029170-3u2c5nboldvniesjmkgm0fhtc54a0mld.apps.googleusercontent.com'
         app.config['GOOGLE_CLIENT_SECRET'] = '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'
-        app.config['GOOGLE_REDIRECT_URI'] = 'http://127.0.0.1:5000/google_login/callback'
+        app.config['GOOGLE_REDIRECT_URI'] = 'https://shopcrawlbackend.onrender.com/google_login/callback'
 
     # Initialize extensions
     db.init_app(app)
@@ -149,7 +149,7 @@ def create_app(config_class=None):
             db.session.commit()
 
         access_token = create_access_token(identity=user.id)
-        return redirect(f"http://localhost:5173/login?token={access_token}")
+        return redirect(f"https://shop-crawlfront.vercel.app/login?token={access_token}")
 
     def credentials_to_dict(credentials):
         """Converts credentials to a dictionary."""
