@@ -24,26 +24,28 @@ ShopCrawl automates product comparison across Amazon, eBay, Shopify, and Alibaba
 ## Future Enhancements
 . AI-powered Recommendations based on past searches.
 . Wishlist & Price Alerts for registered users.
-. I-ntegration with Payment Gateways for checkout assistance.
+. Integration with Payment Gateways for checkout assistance.
 . Mobile App (React Native) for better user experience.
 
 ## Technologies Used
-. Frontend:React.js, Redux Toolkit / useContext
-. Backend:Flask (Python)
-. Database:PostgreSQL
+- Frontend: React.js, useContext (for state management)
+- Backend: Flask (Python3)
+- Testing: pytest
+- Database: PostgreSQL
+
 
 ## Installation
-1.Clone the Repository:
+1.Clone the Repository
+2.Run 'pipenv install' to ensure all dependencies are up to date in your local machine
+3.Then run 'pipenv shell' to enter the project's virtual environment
 
-
-## Live Server
--link:
-
-## Slide Deck
--link:
+## Slide Deck(Project associated links including the deployed link, frontend repo link & a youtube video recording demonstrating how the app works)
+- Deployed link: shop-crawlfront.vercel.app/
+- Frontend Link: https://github.com/EvansKabiru/ShopCrawlfront
+- Youtube Video Recording:
 
 ## License
-This project is licensed under the MIT License.
+This project is licensed under the License © 2025 Shopcrawl. All rights reserved.
 
 
 
