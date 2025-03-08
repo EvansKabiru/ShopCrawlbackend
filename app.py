@@ -20,7 +20,7 @@ app = Flask(__name__)
 CORS(app)  # Enabling CORS for cross-origin requests
 
 # Database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://shop_crawl_db_user:v4bSEhl4jKrMJNW0XEk61pzMCx0pYY4V@dpg-cv49m72j1k6c73bgvqa0-a.oregon-postgres.render.com/shop_crawl_db'  # Path to your database
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://shopcrawl_db_user:qk7uMKmeDME51DVdEEtXeirPE7uUFBqt@dpg-cv5vg2in91rc73b9a390-a.oregon-postgres.render.com/shopcrawl_db'  # Path to your database
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Disable modification tracking
 
 # Initialize db with the app
