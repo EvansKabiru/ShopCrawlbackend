@@ -38,7 +38,7 @@ jwt = JWTManager(app)  # Initialize JWTManager
 app.secret_key = secrets.token_hex(16)
 app.config['GOOGLE_CLIENT_ID'] = '414872029170-3u2c5nboldvniesjmkgm0fhtc54a0mld.apps.googleusercontent.com'
 app.config['GOOGLE_CLIENT_SECRET'] = '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'
-app.config['GOOGLE_REDIRECT_URI'] = 'http://127.0.0.1:5000/google_login/callback'
+app.config['GOOGLE_REDIRECT_URI'] = 'https://shopcrawlbackend-2.onrender.com/google_login/callback'
 
 client_secrets_file = os.path.join(os.path.dirname(__file__), 'client_secret.json')
 
