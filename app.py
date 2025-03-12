@@ -17,7 +17,7 @@ from google.auth.transport import requests as google_requests
 
 # Initialize Flask app
 app = Flask(__name__)
-CORS(app)  # Enabling CORS for cross-origin requests
+CORS(app, origins=["https://shop-crawlfront.vercel.app"])
 
 # Database configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://shopcrawl_db_user:qk7uMKmeDME51DVdEEtXeirPE7uUFBqt@dpg-cv5vg2in91rc73b9a390-a.oregon-postgres.render.com/shopcrawl_db'  # Path to your database
